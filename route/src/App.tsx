@@ -9,28 +9,29 @@ import About from './components/About'
 import Features from './components/Features'
 import Pricing from './components/Pricing'
 import Contact from './components/Contact'
+import NotFound from './components/NotFound'
 
 
 const App: React.FC = () => {
   return (
-    <BrowserRouter>
-      <div>
+    <>
+      <BrowserRouter>
         <NavBar links={NavLinks} />
-      </div>
-      <Routes>
-        <Route path='/' element={<Home/>}/>
-        <Route path='/about' element={<About/>}/>
-        <Route path='/features' element={<Features/>}/>
-        <Route path='/pricing' element={<Pricing/>}/>
-        <Route path='/contact' element={<Contact/>}/>
-      </Routes>
-      <div>
+        
+        <Routes>
+          <Route path='/' element={<Home/>}/>
+          <Route path='/about' element={<About/>}/>
+          <Route path='/features' element={<Features/>}/>
+          <Route path='/pricing' element={<Pricing/>}/>
+          <Route path='/contact' element={<Contact/>}/>
+          <Route path="*" element={<NotFound/>}/>
+        </Routes>
+        
         <Footer FooterLinks={FooterLinks}/>
-      </div>
+      </BrowserRouter>
+    </>
+  );
+};
 
-    </BrowserRouter>
-   
-  )
-}
 
 export default App
