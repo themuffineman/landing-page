@@ -1,3 +1,3 @@
-const NavLinks = ['Home', 'About', 'Contact', 'Pricing', 'Features']
+const NavLinks = ['home', 'about', 'contact', 'pricing', 'features']
 
 export default NavLinks
