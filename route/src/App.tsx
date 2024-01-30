@@ -1,52 +1,55 @@
 import React from 'react'
-import NavBar from './components/NavBar'
-import NavLinks from './utils/NavLinks'
-import Footer from './components/Footer'
-import FooterLinks from './utils/FooterLinks'
 import Home from './components/Home'
-import { BrowserRouter as Router, Route, Routes, Outlet } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom'
 import About from './components/About'
 import Features from './components/Features'
 import Pricing from './components/Pricing'
 import Contact from './components/Contact'
 import NotFound from './components/NotFound'
+import SharedLayout from './components/SharedLayout'
+import { LoggedInContext } from './utils/LoggedContext'
+import Login from './components/Login'
+import { useLocalStorage } from './utils/useLocalStorage'
 
 
 const App: React.FC = () => {
+
+  const [loggedIn, setIsLoggedIn ] = useLocalStorage('loggedIn', false)
+
+
+
   return (
     <>
+      <LoggedInContext.Provider value={{loggedIn, setIsLoggedIn}} >
+
       <Router>
         
         <Routes>
 
-          <Route path='/' element={<SharedLayout/>}>
-            <Route path='/' element={<Home/>}/>
-            <Route path='/about' element={<About/>}/>
-            <Route path='features' element={<Features/>}/>
-            <Route path='pricing' element={<Pricing/>}/>
-            <Route path='contact' element={<Contact/>}/>
+          <Route path='/login' element={loggedIn? <Navigate to='/'/> :<Login/>}/>
+
+          <Route path='/' element={loggedIn? <SharedLayout/> : <Navigate to='login'/>}>
+            <Route index element={<Home/>}/>
+            <Route path='about' element={!loggedIn? <Navigate to='login'/> : <About/>}/>
+            <Route path='features' element={!loggedIn? <Navigate to='login'/> : <Features/>}/>
+            <Route path='pricing' element={!loggedIn? <Navigate to='login'/> : <Pricing/>}/>
+            <Route path='contact' element={!loggedIn? <Navigate to='login'/> : <Contact/>}/>
           </Route>
-          
+
           <Route path="*" element={<NotFound/>}/>
 
         </Routes>
         
-        <Footer FooterLinks={FooterLinks}/>
+        
       </Router>
+
+      </LoggedInContext.Provider>
     </>
   );
 };
 
 
-const SharedLayout = () => {
 
-  return(
-    <>
-        <NavBar links={NavLinks} />
-        <Outlet/>
-    </>
-  )
-}
 
 
 
